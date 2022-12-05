@@ -1,13 +1,18 @@
 import express from "express";
 import minimist from "minimist";
 import Database from "better-sqlite3";
-
 const bcrypt = require("bcrypt");
+
+//Database Initialization
 const db = new Database("database.db");
 db.pragma("journal_mode = WAL");
 
-var loggedIn = null;
+//Global Variables for Functionality
+var loggedIn = null; //Currently logged in user
+var currUserScore = 0; //Current User Score
+var currCompScore = 0; //Current Computer Score
 
+////////////////////////////Database Setup///////////////////////////////////////
 try {
   db.exec(
     `CREATE TABLE Users (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(100), E-Mail VARCHAR(255), UserName VARCHAR(64), Password VARCHAR(64));`
@@ -26,6 +31,7 @@ try {
   );
 } catch (error) {}
 
+////////////////////////////////// SERVER SETUP ////////////////////////////////////
 const app = express();
 const args = minimist(process.argv.slice(2));
 const port = args.port || 2000;
@@ -34,9 +40,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", function (req, res) {
-  res.redirect("/login");
+  if (loggedIn == null) res.redirect("/login");
+  else res.redirect("/home"); ////////////////////////////////
 });
 
+//////////////////////////////////// USER ACCOUNT FEATURES ////////////////////////////
 //LOGIN TO ACCOUNT
 app.post("/login", function (req, res) {
   const username = req.body.username;
@@ -63,7 +71,11 @@ app.post("/login", function (req, res) {
         //LOGIN SUCCESSFUL
         const logLoginSuccess = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'logged in successfully', '${now.toISOString()}');`;
         db.exec(logLoginSuccess);
+
         loggedIn = username;
+        currUserScore = 0;
+        currCompScore = 0;
+
         //REDIRECT TO HOMEPAGE
         // req.app.set("user", user);
         // req.app.set("pass", pass);
@@ -163,6 +175,44 @@ app.post("/logout", function (req, res) {
   // res.redirect("/login");
 });
 
+////////////////////////////////////////// GAME FEATURES ///////////////////////////////
+//Play Game
+app.post("/play_game", function (req, res) {
+  //- Update database every time depending on condition
+  const userInput = req.body.input; // Rock, paper or scissors
+  const randInt = Math.floor(Math.random() * 3); // Random integer between 0 to 2
+  const compInput = null;
+  if (randInt == 0) compInput = "rock";
+  else if (randInt == 1) compInput = "paper";
+  else compInput = "scissors";
+
+  if (
+    (compInput == "rock" && userInput == "scissors") ||
+    (compInput == "paper" && userInput == "rock") ||
+    (compInput == "scissors" && userInput == "paper")
+  ) {
+    currCompScore++;
+    const logGame = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${loggedIn}', 'played the game and lost', '${now.toISOString()}');`;
+    db.exec(logGame);
+  } else {
+    currUserScore++;
+    const logGame = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${loggedIn}', 'played the game and won', '${now.toISOString()}');`;
+    db.exec(logGame);
+
+    //Update database with new high score if current score is higher than before
+    const currScore = currUserScore - currCompScore;
+    const getScore = db.prepare(
+      `SELECT Highest_Score FROM Leaderboard WHERE UserName='${loggedIn}'`
+    );
+    let highScore = getScore.get();
+    if (currScore > highScore) {
+      const updateScore = `INSERT INTO Leaderboard (UserName, Highest_Score) VALUES ('${loggedIn}', '${currScore}');`;
+      db.exec(updateScore);
+    }
+  }
+});
+
+////////////////////////////////////////// DATABASE FEATURES ///////////////////////////
 //RETRIEVE USERS DB
 app.get("/users_db", function (req, res) {
   const getUsers = db.prepare(`SELECT * FROM Users;`);
