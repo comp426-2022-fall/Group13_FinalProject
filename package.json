@@ -2,12 +2,12 @@
   "name": "group13_final_project",
   "version": "1.0.0",
   "description": "COMP426 Final Project Group 13 - Rock-Paper-Scissors Game",
-  "main": "index.js",
+  "main": "server.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "test": "npm test"
+    "test": "node server.js --port=2000"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,6 @@
   "bugs": {
     "url": "https://github.com/comp426-2022-fall/Group13_FinalProject/issues"
   },
-  "homepage": "https://github.com/comp426-2022-fall/Group13_FinalProject#readme"
+  "homepage": "https://github.com/comp426-2022-fall/Group13_FinalProject#readme",
+  "type": "module"
 }
