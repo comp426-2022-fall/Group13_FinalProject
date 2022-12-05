@@ -1,7 +1,6 @@
 import express from "express";
 import minimist from "minimist";
 import Database from "better-sqlite3";
-import bcrypt from "bcrypt";
 
 //Database Initialization
 const db = new Database("database.db");
@@ -13,22 +12,20 @@ var currUserScore = 0; //Current User Score
 var currCompScore = 0; //Current Computer Score
 
 ////////////////////////////Database Setup///////////////////////////////////////
+const createUserTable = `CREATE TABLE Users (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(100), Email VARCHAR(255), UserName VARCHAR(64), Password VARCHAR(64));`;
+const createLeaderTable = `CREATE TABLE Leaderboard (ID INTEGER PRIMARY KEY AUTOINCREMENT, UserName VARCHAR(64), Highest_Score INTEGER);`;
+const createLogsTable = `CREATE TABLE Logs (ID INTEGER PRIMARY KEY AUTOINCREMENT, UserName VARCHAR(64), Message VARCHAR, Time VARCHAR);`;
+
 try {
-  db.exec(
-    `CREATE TABLE Users (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(100), E-Mail VARCHAR(255), UserName VARCHAR(64), Password VARCHAR(64));`
-  );
+  db.exec(createUserTable);
 } catch (error) {}
 
 try {
-  db.exec(
-    `CREATE TABLE Leaderboard (ID INTEGER PRIMARY KEY AUTOINCREMENT, UserName VARCHAR(64), Highest_Score INTEGER);`
-  );
+  db.exec(createLeaderTable);
 } catch (error) {}
 
 try {
-  db.exec(
-    `CREATE TABLE Logs (ID INTEGER PRIMARY KEY AUTOINCREMENT, UserName VARCHAR(64), Message VARCHAR, Time VARCHAR);`
-  );
+  db.exec(createLogsTable);
 } catch (error) {}
 
 ////////////////////////////////// SERVER SETUP ////////////////////////////////////
@@ -43,13 +40,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", function (req, res) {
-  if (loggedIn == null) res.redirect("/login");
-  else res.redirect("/home");
+  res.redirect("/login");
 });
 
 //////////////////////////////////// USER ACCOUNT FEATURES ////////////////////////////
 app.get("/login", function (req, res) {
-  res.render("login");
+  if (loggedIn) res.redirect("/home");
+  else res.render("login");
 });
 
 app.get("/register", function (req, res) {
@@ -57,15 +54,17 @@ app.get("/register", function (req, res) {
 });
 
 app.get("/home", function (req, res) {
-  res.render("home");
+  if (loggedIn) res.render("home", { loggedIn: loggedIn });
+  else res.redirect("/login");
 });
 
 //LOGIN TO ACCOUNT
 app.post("/login", function (req, res) {
   const username = req.body.username;
   const password = req.body.password;
-
-  //Check if username exists in database
+  const time = Date.now();
+  const now = new Date(time);
+  //Check if user exists in database
   const checkUsername = db.prepare(
     `SELECT * FROM Users WHERE UserName='${username}'`
   );
@@ -73,34 +72,27 @@ app.post("/login", function (req, res) {
 
   if (result == undefined) {
     //USERNAME DOES NOT EXIST
+    console.log("USERNAME DOES NOT EXIST");
   } else {
-    const getPass = db.prepare(
-      `SELECT Password FROM Users WHERE UserName='${username}'`
+    const checkPass = db.prepare(
+      `SELECT * FROM Users WHERE UserName='${username}' and Password='${password}'`
     );
-    let hashedPass = getPass.get();
-    bcrypt.compare(password, hashedPass, function (err, result) {
-      const time = Date.now();
-      const now = new Date(time);
+    let Pass = checkPass.get();
+    if (Pass == undefined) {
+      //Wrong Password
+      console.log("WRONG PASSWORD");
+      const logLoginFailure = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'failed to login due to wrong password', '${now.toISOString()}');`;
+      db.exec(logLoginFailure);
+    } else {
+      //LOGIN SUCCESSFUL
+      const logLoginSuccess = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'logged in successfully', '${now.toISOString()}');`;
+      db.exec(logLoginSuccess);
 
-      if (result) {
-        //LOGIN SUCCESSFUL
-        const logLoginSuccess = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'logged in successfully', '${now.toISOString()}');`;
-        db.exec(logLoginSuccess);
-
-        loggedIn = username;
-        currUserScore = 0;
-        currCompScore = 0;
-
-        //REDIRECT TO HOMEPAGE
-        // req.app.set("user", user);
-        // req.app.set("pass", pass);
-        // res.redirect("/home");
-      } else {
-        //WRONG PASSWORD
-        const logLoginFailure = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'failed to login due to wrong password', '${now.toISOString()}');`;
-        db.exec(logLoginFailure);
-      }
-    });
+      loggedIn = username;
+      currUserScore = 0;
+      currCompScore = 0;
+      res.redirect("/home");
+    }
   }
 });
 
@@ -119,21 +111,22 @@ app.post("/register", function (req, res) {
   let result = checkUsername.get();
 
   if (result === undefined) {
-    bcrypt.hash(password, saltRounds, function (err, hash) {
-      const newAcc = `INSERT INTO Users (Name, E-Mail, UserName, Password) VALUES ('${name}', '${email}', '${username}', '${hash}');`;
-      db.exec(newAcc);
-      const minScore = 0;
-      const newAccLB = `INSERT INTO Leaderboard (UserName, Highest_Score) VALUES ('${username}', '${minScore}');`;
-      db.exec(newAccLB);
-    });
+    const newAcc = `INSERT INTO Users (Name, Email, UserName, Password) VALUES ('${name}', '${email}', '${username}', '${password}');`;
+    db.exec(newAcc);
+    const minScore = 0;
+    const newAccLB = `INSERT INTO Leaderboard (UserName, Highest_Score) VALUES ('${username}', '${minScore}');`;
+    db.exec(newAccLB);
     const time = Date.now();
     const now = new Date(time);
     const logAccCreate = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'created a new account', '${now.toISOString()}');`;
-    db.exec(logAccCreate);
-    //CREATE FILES TO RENDER AT THIS STAGE
-    // res.render("new_acc_made");
+    try {
+      db.exec(logAccCreate);
+    } catch (error) {
+      console.log(error);
+    }
+    res.render("login");
   } else {
-    // res.render("username_exists");
+    console.log("Username Exists");
   }
 });
 
@@ -141,6 +134,8 @@ app.post("/register", function (req, res) {
 app.post("/delete-account", function (req, res) {
   const username = req.body.username;
   const password = req.body.password;
+  const time = Date.now();
+  const now = new Date(time);
 
   //Check if username exists in database
   const checkUsername = db.prepare(
@@ -150,32 +145,26 @@ app.post("/delete-account", function (req, res) {
 
   if (result == undefined) {
     //USERNAME DOES NOT EXIST
+    console.log("USERNAME DOES NOT EXIST");
   } else {
     const getPass = db.prepare(
-      `SELECT Password FROM Users WHERE UserName='${username}'`
+      `SELECT * FROM Users WHERE UserName='${username}' and Password='${password}'`
     );
-    let hashedPass = getPass.get();
-    bcrypt.compare(password, hashedPass, function (err, result) {
-      const time = Date.now();
-      const now = new Date(time);
-
-      if (result) {
-        //PASSWORD VERIFICATION SUCCESS
-        const delAcc = `DELETE FROM Users WHERE UserName='${username}'`;
-        db.exec(delAcc);
-        const delAccLB = `DELETE FROM Leaderboard WHERE UserName='${username}'`;
-        db.exec(delAccLB);
-        const logDeleteSuccess = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'deleted their account', '${now.toISOString()}');`;
-        db.exec(logDeleteSuccess);
-
-        //REDIRECT TO LOGIN PAGE
-        // res.redirect("/login");
-      } else {
-        //WRONG PASSWORD
-        const logDeleteFailure = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'failed to delete due to wrong password', '${now.toISOString()}');`;
-        db.exec(logDeleteFailure);
-      }
-    });
+    let Pass = getPass.get();
+    if (Pass == undefined) {
+      //WRONG PASSWORD
+      const logDeleteFailure = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'failed to delete due to wrong password', '${now.toISOString()}');`;
+      db.exec(logDeleteFailure);
+    } else {
+      //PASSWORD VERIFICATION SUCCESS
+      const delAcc = `DELETE FROM Users WHERE UserName='${username}'`;
+      db.exec(delAcc);
+      const delAccLB = `DELETE FROM Leaderboard WHERE UserName='${username}'`;
+      db.exec(delAccLB);
+      const logDeleteSuccess = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'deleted their account', '${now.toISOString()}');`;
+      db.exec(logDeleteSuccess);
+      res.redirect("/login");
+    }
   }
 });
 
@@ -186,8 +175,7 @@ app.post("/logout", function (req, res) {
   const logLogout = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'logged out', '${now.toISOString()}');`;
   db.exec(logLogout);
   loggedIn = null;
-  //REDIRECT TO LOGIN PAGE
-  // res.redirect("/login");
+  res.redirect("/login");
 });
 
 ////////////////////////////////////////// GAME FEATURES ///////////////////////////////
