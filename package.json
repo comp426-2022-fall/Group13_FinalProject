@@ -19,5 +19,9 @@
     "url": "https://github.com/comp426-2022-fall/Group13_FinalProject/issues"
   },
   "homepage": "https://github.com/comp426-2022-fall/Group13_FinalProject#readme",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "express": "^4.18.2",
+    "minimist": "^1.2.7"
+  }
 }
