@@ -178,38 +178,43 @@ app.post("/logout", function (req, res) {
 ////////////////////////////////////////// GAME FEATURES ///////////////////////////////
 //Play Game
 app.post("/play_game", function (req, res) {
-  //- Update database every time depending on condition
-  const userInput = req.body.input; // Rock, paper or scissors
-  const randInt = Math.floor(Math.random() * 3); // Random integer between 0 to 2
-  const compInput = null;
-  if (randInt == 0) compInput = "rock";
-  else if (randInt == 1) compInput = "paper";
-  else compInput = "scissors";
+  const winner = req.body.winner;
 
-  if (
-    (compInput == "rock" && userInput == "scissors") ||
-    (compInput == "paper" && userInput == "rock") ||
-    (compInput == "scissors" && userInput == "paper")
-  ) {
-    currCompScore++;
-    const logGame = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${loggedIn}', 'played the game and lost', '${now.toISOString()}');`;
-    db.exec(logGame);
+  //Add this depending on how the frontend logic works
+  if (winner == 0) {
   } else {
-    currUserScore++;
-    const logGame = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${loggedIn}', 'played the game and won', '${now.toISOString()}');`;
-    db.exec(logGame);
-
-    //Update database with new high score if current score is higher than before
-    const currScore = currUserScore - currCompScore;
-    const getScore = db.prepare(
-      `SELECT Highest_Score FROM Leaderboard WHERE UserName='${loggedIn}'`
-    );
-    let highScore = getScore.get();
-    if (currScore > highScore) {
-      const updateScore = `INSERT INTO Leaderboard (UserName, Highest_Score) VALUES ('${loggedIn}', '${currScore}');`;
-      db.exec(updateScore);
-    }
   }
+  // const userInput = req.body.input; // Rock, paper or scissors
+  // const randInt = Math.floor(Math.random() * 3); // Random integer between 0 to 2
+  // const compInput = null;
+  // if (randInt == 0) compInput = "rock";
+  // else if (randInt == 1) compInput = "paper";
+  // else compInput = "scissors";
+
+  // if (
+  //   (compInput == "rock" && userInput == "scissors") ||
+  //   (compInput == "paper" && userInput == "rock") ||
+  //   (compInput == "scissors" && userInput == "paper")
+  // ) {
+  //   currCompScore++;
+  //   const logGame = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${loggedIn}', 'played the game and lost', '${now.toISOString()}');`;
+  //   db.exec(logGame);
+  // } else {
+  //   currUserScore++;
+  //   const logGame = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${loggedIn}', 'played the game and won', '${now.toISOString()}');`;
+  //   db.exec(logGame);
+
+  //   //Update database with new high score if current score is higher than before
+  //   const currScore = currUserScore - currCompScore;
+  //   const getScore = db.prepare(
+  //     `SELECT Highest_Score FROM Leaderboard WHERE UserName='${loggedIn}'`
+  //   );
+  //   let highScore = getScore.get();
+  //   if (currScore > highScore) {
+  //     const updateScore = `INSERT INTO Leaderboard (UserName, Highest_Score) VALUES ('${loggedIn}', '${currScore}');`;
+  //     db.exec(updateScore);
+  //   }
+  // }
 });
 
 ////////////////////////////////////////// DATABASE FEATURES ///////////////////////////
