@@ -93,6 +93,9 @@ app.post("/new-account", function (req, res) {
     bcrypt.hash(password, saltRounds, function (err, hash) {
       const newAcc = `INSERT INTO Users (Name, E-Mail, UserName, Password) VALUES ('${name}', '${email}', '${username}', '${hash}');`;
       db.exec(newAcc);
+      const minScore = 0;
+      const newAccLB = `INSERT INTO Leaderboard (UserName, Highest_Score) VALUES ('${username}', '${minScore}');`;
+      db.exec(newAccLB);
     });
     const time = Date.now();
     const now = new Date(time);
@@ -131,6 +134,8 @@ app.post("/delete-account", function (req, res) {
         //PASSWORD VERIFICATION SUCCESS
         const delAcc = `DELETE FROM Users WHERE UserName='${username}'`;
         db.exec(delAcc);
+        const delAccLB = `DELETE FROM Leaderboard WHERE UserName='${username}'`;
+        db.exec(delAccLB);
         const logDeleteSuccess = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'deleted their account', '${now.toISOString()}');`;
         db.exec(logDeleteSuccess);
 
