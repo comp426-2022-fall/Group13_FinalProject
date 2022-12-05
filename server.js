@@ -64,4 +64,38 @@ app.post("/new-account", function (req, res) {
   }
 });
 
+app.get("/users_db", function (req, res) {
+  const getUsers = db.prepare(`SELECT * FROM Users;`);
+  let result = getUsers.all();
+
+  if (result === undefined) {
+    //CREATE PAGES TO RENDER
+    // res.send('nothing in db');
+  } else {
+    // res.send(all);
+  }
+});
+
+app.get("/leaderboard_db", function (req, res) {
+  const getBoard = db.prepare(`SELECT * FROM Leaderboard;`);
+  let result = getBoard.all();
+
+  if (result === undefined) {
+    // res.send('nothing in db');
+  } else {
+    // res.send(all);
+  }
+});
+
+app.get("/logs_db", function (req, res) {
+  const getLogs = db.prepare(`SELECT * FROM Logs;`);
+  let result = getLogs.all();
+
+  if (result === undefined) {
+    // res.send('nothing in db');
+  } else {
+    // res.send(all);
+  }
+});
+
 app.listen(port);
