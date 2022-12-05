@@ -8,19 +8,19 @@ db.pragma("journal_mode = WAL");
 
 try {
   db.exec(
-    "CREATE TABLE Users (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(100), E-Mail VARCHAR(255), UserName VARCHAR(64), Password VARCHAR(64));"
+    `CREATE TABLE Users (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(100), E-Mail VARCHAR(255), UserName VARCHAR(64), Password VARCHAR(64));`
   );
 } catch (error) {}
 
 try {
   db.exec(
-    "CREATE TABLE Leaderboard (ID INTEGER PRIMARY KEY AUTOINCREMENT, UserName VARCHAR(64), Highest_Score INTEGER);"
+    `CREATE TABLE Leaderboard (ID INTEGER PRIMARY KEY AUTOINCREMENT, UserName VARCHAR(64), Highest_Score INTEGER);`
   );
 } catch (error) {}
 
 try {
   db.exec(
-    "CREATE TABLE Logs (ID INTEGER PRIMARY KEY AUTOINCREMENT, UserName VARCHAR(64), Message VARCHAR, Time VARCHAR);"
+    `CREATE TABLE Logs (ID INTEGER PRIMARY KEY AUTOINCREMENT, UserName VARCHAR(64), Message VARCHAR, Time VARCHAR);`
   );
 } catch (error) {}
 
@@ -35,6 +35,7 @@ app.get("/", function (req, res) {
   res.redirect("/login");
 });
 
+//LOGIN TO ACCOUNT
 app.post("/login", function (req, res) {
   const username = req.body.username;
   const password = req.body.password;
@@ -58,8 +59,8 @@ app.post("/login", function (req, res) {
 
       if (result) {
         //LOGIN SUCCESSFUL
-        const loginSuccess = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'logged in successfully', '${now.toISOString()}');`;
-        db.exec(loginSuccess);
+        const logLoginSuccess = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'logged in successfully', '${now.toISOString()}');`;
+        db.exec(logLoginSuccess);
 
         //REDIRECT TO HOMEPAGE
         // req.app.set("user", user);
@@ -67,13 +68,14 @@ app.post("/login", function (req, res) {
         // res.redirect("/home");
       } else {
         //WRONG PASSWORD
-        const loginFailure = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'log in failed due to wrong password', '${now.toISOString()}');`;
-        db.exec(loginFailure);
+        const logLoginFailure = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'failed to login due to wrong password', '${now.toISOString()}');`;
+        db.exec(logLoginFailure);
       }
     });
   }
 });
 
+//CREATE A NEW ACCOUNT
 app.post("/new-account", function (req, res) {
   //Variables for the input parameters
   const name = req.body.name;
@@ -103,6 +105,58 @@ app.post("/new-account", function (req, res) {
   }
 });
 
+//DELETE EXISTING ACCOUNT
+app.post("/delete-account", function (req, res) {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  //Check if username exists in database
+  const checkUsername = db.prepare(
+    `SELECT * FROM Users WHERE UserName='${username}'`
+  );
+  let result = checkUsername.get();
+
+  if (result == undefined) {
+    //USERNAME DOES NOT EXIST
+  } else {
+    const getPass = db.prepare(
+      `SELECT Password FROM Users WHERE UserName='${username}'`
+    );
+    let hashedPass = getPass.get();
+    bcrypt.compare(password, hashedPass, function (err, result) {
+      const time = Date.now();
+      const now = new Date(time);
+
+      if (result) {
+        //PASSWORD VERIFICATION SUCCESS
+        const delAcc = `DELETE FROM Users WHERE UserName='${username}'`;
+        db.exec(delAcc);
+        const logDeleteSuccess = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'deleted their account', '${now.toISOString()}');`;
+        db.exec(logDeleteSuccess);
+
+        //REDIRECT TO LOGIN PAGE
+        // res.redirect("/login");
+      } else {
+        //WRONG PASSWORD
+        const logDeleteFailure = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'failed to delete due to wrong password', '${now.toISOString()}');`;
+        db.exec(logDeleteFailure);
+      }
+    });
+  }
+});
+
+//LOGOUT OF CURRENT ACCOUNT
+app.post("/logout", function (req, res) {
+  const time = Date.now();
+  const now = new Date(time);
+  const logLogout = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'logged out', '${now.toISOString()}');`;
+  db.exec(logLogout);
+
+  //REDIRECT TO LOGIN PAGE
+  // res.redirect("/login");
+});
+
+//RETRIEVE USERS DB
 app.get("/users_db", function (req, res) {
   const getUsers = db.prepare(`SELECT * FROM Users;`);
   let result = getUsers.all();
@@ -115,6 +169,7 @@ app.get("/users_db", function (req, res) {
   }
 });
 
+//RETRIEVE LEADERBOARD DB
 app.get("/leaderboard_db", function (req, res) {
   const getBoard = db.prepare(`SELECT * FROM Leaderboard;`);
   let result = getBoard.all();
@@ -126,6 +181,7 @@ app.get("/leaderboard_db", function (req, res) {
   }
 });
 
+//RETRIEVE LOGS DB
 app.get("/logs_db", function (req, res) {
   const getLogs = db.prepare(`SELECT * FROM Logs;`);
   let result = getLogs.all();
