@@ -35,6 +35,45 @@ app.get("/", function (req, res) {
   res.redirect("/login");
 });
 
+app.post("/login", function (req, res) {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  //Check if username exists in database
+  const checkUsername = db.prepare(
+    `SELECT * FROM Users WHERE UserName='${username}'`
+  );
+  let result = checkUsername.get();
+
+  if (result == undefined) {
+    //USERNAME DOES NOT EXIST
+  } else {
+    const getPass = db.prepare(
+      `SELECT Password FROM Users WHERE UserName='${username}'`
+    );
+    let hashedPass = getPass.get();
+    bcrypt.compare(password, hashedPass, function (err, result) {
+      const time = Date.now();
+      const now = new Date(time);
+
+      if (result) {
+        //LOGIN SUCCESSFUL
+        const loginSuccess = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'logged in successfully', '${now.toISOString()}');`;
+        db.exec(loginSuccess);
+
+        //REDIRECT TO HOMEPAGE
+        // req.app.set("user", user);
+        // req.app.set("pass", pass);
+        // res.redirect("/home");
+      } else {
+        //WRONG PASSWORD
+        const loginFailure = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'log in failed due to wrong password', '${now.toISOString()}');`;
+        db.exec(loginFailure);
+      }
+    });
+  }
+});
+
 app.post("/new-account", function (req, res) {
   //Variables for the input parameters
   const name = req.body.name;
