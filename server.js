@@ -6,6 +6,8 @@ const bcrypt = require("bcrypt");
 const db = new Database("database.db");
 db.pragma("journal_mode = WAL");
 
+var loggedIn = null;
+
 try {
   db.exec(
     `CREATE TABLE Users (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(100), E-Mail VARCHAR(255), UserName VARCHAR(64), Password VARCHAR(64));`
@@ -61,7 +63,7 @@ app.post("/login", function (req, res) {
         //LOGIN SUCCESSFUL
         const logLoginSuccess = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'logged in successfully', '${now.toISOString()}');`;
         db.exec(logLoginSuccess);
-
+        loggedIn = username;
         //REDIRECT TO HOMEPAGE
         // req.app.set("user", user);
         // req.app.set("pass", pass);
@@ -156,7 +158,7 @@ app.post("/logout", function (req, res) {
   const now = new Date(time);
   const logLogout = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'logged out', '${now.toISOString()}');`;
   db.exec(logLogout);
-
+  loggedIn = null;
   //REDIRECT TO LOGIN PAGE
   // res.redirect("/login");
 });
