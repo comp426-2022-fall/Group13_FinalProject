@@ -1,7 +1,7 @@
 import express from "express";
 import minimist from "minimist";
 import Database from "better-sqlite3";
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 
 //Database Initialization
 const db = new Database("database.db");
@@ -36,15 +36,30 @@ const app = express();
 const args = minimist(process.argv.slice(2));
 const port = args.port || 2000;
 
+app.use(express.static("css"));
+app.set("view engine", "ejs");
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", function (req, res) {
   if (loggedIn == null) res.redirect("/login");
-  else res.redirect("/home"); ////////////////////////////////
+  else res.redirect("/home");
 });
 
 //////////////////////////////////// USER ACCOUNT FEATURES ////////////////////////////
+app.get("/login", function (req, res) {
+  res.render("login");
+});
+
+app.get("/register", function (req, res) {
+  res.render("register");
+});
+
+app.get("/home", function (req, res) {
+  res.render("home");
+});
+
 //LOGIN TO ACCOUNT
 app.post("/login", function (req, res) {
   const username = req.body.username;
@@ -90,7 +105,7 @@ app.post("/login", function (req, res) {
 });
 
 //CREATE A NEW ACCOUNT
-app.post("/new-account", function (req, res) {
+app.post("/register", function (req, res) {
   //Variables for the input parameters
   const name = req.body.name;
   const email = req.body.email;
