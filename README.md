@@ -1,54 +1,56 @@
 
-# a99 Final Project
+# a99 Final Project Group 13
+Rock, paper, scissors
 
 ## Summary 
+Oyr 'Rock, paper, scissors' game is a simple concept which allows more users to have fun and try to beat our bot in that mini-game. They need to have an account, and after that they are ready to go and enjoy their time. Moreover, for making it more competitvely there will be displayed a leaderboard where the best scores will be presented. Furthermore, for motivating the users, when they are losing against the computer their score will be affected in a negative way. Their final score is: their score - computer score.
 
-COMP426 final project template boilerplate.
-All your code and documentation goes here.
-Change this text to be a brief description of your final project.
-Put the name of your project in the header above.
-You will change everything below to be the main technical documentation, as outlined below.
+## Demo
+For taking a look at our demo please go on the following video. Even if is a simple concept, it can become adictive so do not hesitate to try it. We focused in creating a concept so far, considering that was challenging to find appropiate times to meet all of us and do proper development work. So, the video will be done by one person, but everyone contributed in that poject, having an amazing team work flow, and a great experience in the development process.
 
-## First steps
+## Preview
 
-Other steps that you will need to take after your team has accepted the assignment:
+Even if may take a bit to load, it will worth it, presenting main page applications!
 
-1. Choose a license and update the LICENSE file accordingly. 
-2. Edit this README.md file and use it as the main location of your technical documentation with links out to information contained under `/docs/`.
-3. Create a `/docs/` directory for more elaborate documentation of your API, planning notes, etc.
-4. Make sure that all of your team members have access to the repository as administrators.
-5. Create a project under the **Projects** tab. Use this to manage your planning. Create a To-do list, etc. Explore the tools available and user them to manage your project.
-7. Assign team roles and include a listing of those roles in this README.md file or in another file under `/docs/`.
-8. Then put your entire development workflow in this repository.
-9. Use **Pull requests** to propose changes and incorporate them into your code from various team members. 
-10. Use **Issues** to identify and track bugs and also to communicate about various aspects of the project.
+## Setup instruction
+1. Clone te repository from our group project on git
+2. Run npm install
+3. Run npm start
+4. Navigate to localhost:2000/
+5. CONTROL+C for finishing the job
 
-## Team mangement
+## Team manageemnt
 
-Plan to meet with your team ASAP.
-Talk through identifying roles within your team.
+The team collaboration was great, splitting the jobs and tasks according to everyone time and also for participating as much as possible, everyone bringing his benefits to the project. We figured the following jobs for the team members:
 
-Try to figure out what each of you are good at/enjoy doing and try to work out roles that incorporate that.
+1. A review manager - Robert
+2. A plan manager - Robert
+3. A documentation manager - Robert
+4. A release manager - Bhavit
+5. A project manager - Robert
+6. Front end lead - Ethan
+7. Back end lead - Bhavit
+8. Database lead - Bhavit
+9. Design lead - Ethan
 
-Some basic roles you will want to consider:
+## Planning
 
-1. A review manager - someone to review pull requests and merge or reject them and manage the related discussions
-2. A plan manager - someone to keep an eye on the overall plan and keep the project tab/to-do list up to date
-3. A documentation manager - someone to keep the documentation in order and identify what is missing and needs to be documented
-4. A release manager - someone to manage the packaging and release process for your prototype package
-5. A project manager - someone keeping track of all the moving parts and make sure that everything that needs to happen is happening.
-5. Roles for team members to take charge or different parts of the project. Possible roles:
-    1. Front end lead
-    2. Back end lead
-    3. Database lead
-    4. Design lead
-    5. Etc.
+Firstly we assigned the roles that each one will take care and assure that everything is going according to the plan, and more important we will have a finald emo project in due time. Moreover, we communicate daily and meet either in person or through zoom constantly for updating each other about how the project development is going on.
 
-You will notice that there are more roles than people in your group.
-That is because you will all be doing a hybrid job of managing a thing while working on other things.
+Before the first meeting we set up to do a session of brainstorming and come with several ideas that would be a good approach. Asfter that we had our first official in person meeting on 29th November where we assigned the tasks and made a plan. For questions or problems solutions we used an whatsapp group chat where we communicated. After that we had another meeting on 1st December were we updated all of us and set furthure targets. Next meeting was in person on 7th of December were we set everyhting up, made final changes and do a plan for the presentation.
 
-## Assignment instructions
+## Dependencies
+We used the following:
+= better-sqlite3
+- ejs 3.1.8
+- express 4.18.2
+- minimist 1.2.7
 
-And that is about all you need to get started.
 
-Good skill and be creative!
+## How users are interacting
+
+User can do the following actions: create an account, delete an account, see if the password is wrong, see if the username is taken, play against the computer by choosing their option in the game, see their position in the leaderboard.
+
+## API
+
+## Future development plan
