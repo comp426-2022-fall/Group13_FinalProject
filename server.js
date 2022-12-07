@@ -9,8 +9,6 @@ db.pragma("journal_mode = WAL");
 
 //Global Variables for Functionality
 var loggedIn = null; //Currently logged in user
-var currUserScore = 0; //Current User Score
-var currCompScore = 0; //Current Computer Score
 
 ////////////////////////////Database Setup///////////////////////////////////////
 const createUserTable = `CREATE TABLE Users (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(100), Email VARCHAR(255), UserName VARCHAR(64), Password VARCHAR(64));`;
@@ -62,6 +60,16 @@ app.get("/login", function (req, res) {
 app.get("/register", function (req, res) {
   res.render("register");
   console.log("[REGISTER LOADED]");
+});
+
+app.get("/delete", function (req, res) {
+  res.render("delete");
+});
+
+app.get("/logs", function (req, res) {
+  const getLogs = db.prepare(`SELECT * FROM Logs;`);
+  let result = getLogs.all();
+  res.render("logs", { logs: result });
 });
 
 app.get("/logout", function (req, res) {
@@ -116,8 +124,6 @@ app.post("/login", function (req, res) {
       db.exec(logLoginSuccess);
 
       loggedIn = username;
-      currUserScore = 0;
-      currCompScore = 0;
       res.redirect("/home");
     }
   }
@@ -158,7 +164,7 @@ app.post("/register", function (req, res) {
 });
 
 //DELETE EXISTING ACCOUNT
-app.post("/delete-account", function (req, res) {
+app.post("/delete", function (req, res) {
   const username = req.body.username;
   const password = req.body.password;
   const time = Date.now();
@@ -206,53 +212,12 @@ app.post("/logout", function (req, res) {
 });
 
 ////////////////////////////////////////// GAME FEATURES ///////////////////////////////
-//Play Game
-app.post("/play_game", function (req, res) {
-  const winner = req.body.winner;
-  const rock = req.body.rock;
-  console.log(rock);
-  //Add this depending on how the frontend logic works
-  if (winner == 0) {
-  } else {
-  }
-});
-
-////////////////////////////////////////// DATABASE FEATURES ///////////////////////////
-//RETRIEVE USERS DB
-app.get("/users_db", function (req, res) {
-  const getUsers = db.prepare(`SELECT * FROM Users;`);
-  let result = getUsers.all();
-
-  if (result === undefined) {
-    //CREATE PAGES TO RENDER
-    // res.send('nothing in db');
-  } else {
-    // res.send(all);
-  }
-});
-
-//RETRIEVE LEADERBOARD DB
-app.get("/leaderboard_db", function (req, res) {
-  const getBoard = db.prepare(`SELECT * FROM Leaderboard;`);
-  let result = getBoard.all();
-
-  if (result === undefined) {
-    // res.send('nothing in db');
-  } else {
-    // res.send(all);
-  }
-});
-
-//RETRIEVE LOGS DB
-app.get("/logs_db", function (req, res) {
-  const getLogs = db.prepare(`SELECT * FROM Logs;`);
-  let result = getLogs.all();
-
-  if (result === undefined) {
-    // res.send('nothing in db');
-  } else {
-    // res.send(all);
-  }
+//Post Game Score
+app.post("/post_score", function (req, res) {
+  const score = req.body.score;
+  const addScore = `UPDATE Leaderboard SET Highest_Score= '${score}' WHERE UserName='${loggedIn}';`;
+  db.exec(addScore);
+  res.redirect("/home");
 });
 
 app.listen(port);
