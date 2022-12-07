@@ -52,11 +52,10 @@ app.get("/", function (req, res) {
 app.get("/login", function (req, res) {
   if (loggedIn) {
     res.redirect("/home");
-    console.log("[LOGIN LOADED]")
-  }
-  else {
+    console.log("[LOGIN LOADED]");
+  } else {
     res.render("login");
-    console.log("[LOGIN LOADED]")
+    console.log("[LOGIN LOADED]");
   }
 });
 
@@ -65,13 +64,25 @@ app.get("/register", function (req, res) {
   console.log("[REGISTER LOADED]");
 });
 
+app.get("/logout", function (req, res) {
+  const time = Date.now();
+  const now = new Date(time);
+  const logLogout = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${loggedIn}', 'logged out', '${now.toISOString()}');`;
+  db.exec(logLogout);
+  loggedIn = null;
+  res.redirect("/login");
+});
+
 app.get("/home", function (req, res) {
-  if (loggedIn){
-    res.render("home", { loggedIn: loggedIn });
+  if (loggedIn) {
+    const getBoard = db.prepare(`SELECT * FROM Leaderboard;`);
+    let result = getBoard.all();
+    res.render("home", { loggedIn: loggedIn, leader: result });
     console.log("[HOME LOADED]");
     //I dont know how the html pages are being accessed so how do you load them with different js.scripts
-  } 
-  else { res.redirect("/login"); }
+  } else {
+    res.redirect("/login");
+  }
 });
 
 //LOGIN TO ACCOUNT

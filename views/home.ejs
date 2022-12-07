@@ -15,10 +15,9 @@
 <body>
 <!--------------------------------navbar-------------------------------->
   <nav class = "nav_bar">
-    <a href = "home" class = "main_logo">home</a>
+    <a href = "home" class = "main_logo">Home</a>
     <ul>
-      <li><a href = "login">login</a></li>
-      <li><a href = "register">register</a></li>
+      <li><a href = "logout">Logout</a></li>
     </ul>
   </nav>
 <!--------------------------------game-------------------------------->
@@ -51,6 +50,15 @@
   <!--------------------------------leaderboard-------------------------------->
   <section class="leaderboard">
     <h1>LeaderBoard</h1>
+    <ul>
+      <% leader.forEach(function(dat) { %>
+        User: <%= dat.UserName %>
+        <br>
+        Highest Score: <%= dat.Highest_Score%>
+        <br>
+        <br>
+      <% }); %>
+    </ul>
   </section>
 
 </body>
