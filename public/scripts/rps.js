@@ -41,6 +41,9 @@ function game() {
             })
         })
         update.addEventListener('click',() => {
+            let final_score = playerScore - currCompScore;
+            console.log("PLAYER SCORE: " + playerScore);
+            console.log("CPU SCORE: " + currCompScore);
             window.location.reload();
         })
          

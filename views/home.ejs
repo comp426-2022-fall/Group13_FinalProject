@@ -30,12 +30,14 @@
             <h2>Player: 
               <%= loggedIn %> 
             </h2>
-            <p class="p-count"></p>
-            <p class="c-count"></p>
+            <form class="post_score" method="POST">Post your score
+              <p class="p-count" id="p-count" name="p-count"></p>
+              <p class="c-count" id="c-count" name="c-count"></p>
+            </form>
+
     </div>
    
     <div class="move">Choose your move</div> 
-     <button class="post_score">Post your score</button>
      <!------player options------>
     <div class="options">
       <button class="rock">Rock</button>
