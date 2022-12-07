@@ -46,6 +46,12 @@ app.get("/", function (req, res) {
   res.redirect("/login");
 });
 
+app.get("/logs", function (req, res) {
+  const getLogs = db.prepare(`SELECT * FROM Logs;`);
+  let result = getLogs.all();
+  res.render("logs", { logs: result });
+});
+
 //////////////////////////////////// USER ACCOUNT FEATURES ////////////////////////////
 app.get("/login", function (req, res) {
   if (loggedIn) {
@@ -64,12 +70,6 @@ app.get("/register", function (req, res) {
 
 app.get("/delete", function (req, res) {
   res.render("delete");
-});
-
-app.get("/logs", function (req, res) {
-  const getLogs = db.prepare(`SELECT * FROM Logs;`);
-  let result = getLogs.all();
-  res.render("logs", { logs: result });
 });
 
 app.get("/logout", function (req, res) {
@@ -199,16 +199,6 @@ app.post("/delete", function (req, res) {
       res.redirect("/login");
     }
   }
-});
-
-//LOGOUT OF CURRENT ACCOUNT
-app.post("/logout", function (req, res) {
-  const time = Date.now();
-  const now = new Date(time);
-  const logLogout = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'logged out', '${now.toISOString()}');`;
-  db.exec(logLogout);
-  loggedIn = null;
-  res.redirect("/login");
 });
 
 ////////////////////////////////////////// GAME FEATURES ///////////////////////////////
