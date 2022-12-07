@@ -69,7 +69,6 @@ app.get("/home", function (req, res) {
   if (loggedIn){
     res.render("home", { loggedIn: loggedIn });
     console.log("[HOME LOADED]");
-    //I dont know how the html pages are being accessed so how do you load them with different js.scripts
   } 
   else { res.redirect("/login"); }
 });
