@@ -10,7 +10,7 @@ const cChoiceText = document.querySelector('.cpuChoice');
 const resultText = document.querySelector('.result');
 const update = document.querySelector('.post_score');
 
-update.textContent = "post your score [RELOAD]";
+update.textContent = "post your score ";
 pScoreText.textContent = "Your Score: " + currUserScore;
 cScoreText.textContent = "CPU Score: " + currCompScore;
 
@@ -56,7 +56,7 @@ function game() {
         else if(player == 'rock'){
             if(cpu == 'paper'){
                 resultText.textContent = 'You Lost';
-                rrCompScore++;
+                currCompScore++;
                 return currUserScore;
             }else{
                 resultText.textContent = 'You Won!'
@@ -67,7 +67,7 @@ function game() {
         else if(player == 'scissors'){
             if(cpu == 'rock'){
                 resultText.textContent = 'You Lost';
-                rrCompScore++;
+                currCompScore++;
                 return currUserScore;
             }else{
                 resultText.textContent = 'You Won!';
@@ -78,7 +78,7 @@ function game() {
         else if(player == 'paper'){
             if(cpu == 'scissors'){
                 resultText.textContent = 'You Lost';
-                rrCompScore++;
+                currCompScore++;
                 return currUserScore;
             }else{
                 resultText.textContent = 'You Won!';
