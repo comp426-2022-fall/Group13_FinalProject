@@ -179,6 +179,7 @@ app.post("/delete", function (req, res) {
   if (result == undefined) {
     //USERNAME DOES NOT EXIST
     console.log("USERNAME DOES NOT EXIST");
+    res.render("loginNotFound");
   } else {
     const getPass = db.prepare(
       `SELECT * FROM Users WHERE UserName='${username}' and Password='${password}'`
