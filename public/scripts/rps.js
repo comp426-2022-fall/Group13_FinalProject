@@ -4,15 +4,11 @@ var currUserScore = 0; //Current User Score
 var currCompScore = 0; //Current Computer Score
 
 const pScoreText = document.querySelector('.p-count');
-const cScoreText = document.querySelector('.c-count');
 const pChoiceText = document.querySelector('.pChoice');
 const cChoiceText = document.querySelector('.cpuChoice');
 const resultText = document.querySelector('.result');
-const update = document.querySelector('.post_score');
 
-update.textContent = "post your score [RELOAD]";
 pScoreText.textContent = "Your Score: " + currUserScore;
-cScoreText.textContent = "CPU Score: " + currCompScore;
 
 function game() {
     function playGame() {
@@ -37,7 +33,6 @@ function game() {
                 pChoiceText.textContent = 'you: ' + playerChoice
                 cChoiceText.textContent = 'cpu: ' + cpuChoice
                 pScoreText.textContent = "Your Score: " + playerScore;
-                cScoreText.textContent = "CPU Score: " + currCompScore;
             })
         })
         update.addEventListener('click',() => {
@@ -45,7 +40,7 @@ function game() {
         })
          
     }
-
+ 
     // Function to decide winner
     function winner(player,cpu) {
 
@@ -89,6 +84,7 @@ function game() {
     }
     // play game infinitely
     playGame();
+     
 }
  
 // start game
