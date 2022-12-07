@@ -1,6 +1,7 @@
 import express from "express";
 import minimist from "minimist";
 import Database from "better-sqlite3";
+import { __esModule } from "node-fetch";
 
 //Database Initialization
 const db = new Database("database.db");
@@ -8,8 +9,6 @@ db.pragma("journal_mode = WAL");
 
 //Global Variables for Functionality
 var loggedIn = null; //Currently logged in user
-var currUserScore = 0; //Current User Score
-var currCompScore = 0; //Current Computer Score
 
 ////////////////////////////Database Setup///////////////////////////////////////
 const createUserTable = `CREATE TABLE Users (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(100), Email VARCHAR(255), UserName VARCHAR(64), Password VARCHAR(64));`;
@@ -33,9 +32,13 @@ const app = express();
 const args = minimist(process.argv.slice(2));
 const port = args.port || 2000;
 
-app.use(express.static("css"));
-app.set("view engine", "ejs");
+//link server.js page with css styles
+app.use(express.static("/public"));
+app.use("/css", express.static("public/css"));
+app.use("/img", express.static("public/img"));
+app.use("/scripts", express.static("public/scripts"));
 
+app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -43,19 +46,51 @@ app.get("/", function (req, res) {
   res.redirect("/login");
 });
 
+app.get("/logs", function (req, res) {
+  const getLogs = db.prepare(`SELECT * FROM Logs;`);
+  let result = getLogs.all();
+  res.render("logs", { logs: result });
+});
+
 //////////////////////////////////// USER ACCOUNT FEATURES ////////////////////////////
 app.get("/login", function (req, res) {
-  if (loggedIn) res.redirect("/home");
-  else res.render("login");
+  if (loggedIn) {
+    res.redirect("/home");
+    console.log("[LOGIN LOADED]");
+  } else {
+    res.render("login");
+    console.log("[LOGIN LOADED]");
+  }
 });
 
 app.get("/register", function (req, res) {
   res.render("register");
+  console.log("[REGISTER LOADED]");
+});
+
+app.get("/delete", function (req, res) {
+  res.render("delete");
+});
+
+app.get("/logout", function (req, res) {
+  const time = Date.now();
+  const now = new Date(time);
+  const logLogout = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${loggedIn}', 'logged out', '${now.toISOString()}');`;
+  db.exec(logLogout);
+  loggedIn = null;
+  res.redirect("/login");
 });
 
 app.get("/home", function (req, res) {
-  if (loggedIn) res.render("home", { loggedIn: loggedIn });
-  else res.redirect("/login");
+  if (loggedIn) {
+    const getBoard = db.prepare(`SELECT * FROM Leaderboard;`);
+    let result = getBoard.all();
+    res.render("home", { loggedIn: loggedIn, leader: result });
+    console.log("[HOME LOADED]");
+    //I dont know how the html pages are being accessed so how do you load them with different js.scripts
+  } else {
+    res.redirect("/login");
+  }
 });
 
 //LOGIN TO ACCOUNT
@@ -89,8 +124,6 @@ app.post("/login", function (req, res) {
       db.exec(logLoginSuccess);
 
       loggedIn = username;
-      currUserScore = 0;
-      currCompScore = 0;
       res.redirect("/home");
     }
   }
@@ -131,7 +164,7 @@ app.post("/register", function (req, res) {
 });
 
 //DELETE EXISTING ACCOUNT
-app.post("/delete-account", function (req, res) {
+app.post("/delete", function (req, res) {
   const username = req.body.username;
   const password = req.body.password;
   const time = Date.now();
@@ -168,94 +201,13 @@ app.post("/delete-account", function (req, res) {
   }
 });
 
-//LOGOUT OF CURRENT ACCOUNT
-app.post("/logout", function (req, res) {
-  const time = Date.now();
-  const now = new Date(time);
-  const logLogout = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'logged out', '${now.toISOString()}');`;
-  db.exec(logLogout);
-  loggedIn = null;
-  res.redirect("/login");
-});
-
 ////////////////////////////////////////// GAME FEATURES ///////////////////////////////
-//Play Game
-app.post("/play_game", function (req, res) {
-  const winner = req.body.winner;
-
-  //Add this depending on how the frontend logic works
-  if (winner == 0) {
-  } else {
-  }
-  // const userInput = req.body.input; // Rock, paper or scissors
-  // const randInt = Math.floor(Math.random() * 3); // Random integer between 0 to 2
-  // const compInput = null;
-  // if (randInt == 0) compInput = "rock";
-  // else if (randInt == 1) compInput = "paper";
-  // else compInput = "scissors";
-
-  // if (
-  //   (compInput == "rock" && userInput == "scissors") ||
-  //   (compInput == "paper" && userInput == "rock") ||
-  //   (compInput == "scissors" && userInput == "paper")
-  // ) {
-  //   currCompScore++;
-  //   const logGame = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${loggedIn}', 'played the game and lost', '${now.toISOString()}');`;
-  //   db.exec(logGame);
-  // } else {
-  //   currUserScore++;
-  //   const logGame = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${loggedIn}', 'played the game and won', '${now.toISOString()}');`;
-  //   db.exec(logGame);
-
-  //   //Update database with new high score if current score is higher than before
-  //   const currScore = currUserScore - currCompScore;
-  //   const getScore = db.prepare(
-  //     `SELECT Highest_Score FROM Leaderboard WHERE UserName='${loggedIn}'`
-  //   );
-  //   let highScore = getScore.get();
-  //   if (currScore > highScore) {
-  //     const updateScore = `INSERT INTO Leaderboard (UserName, Highest_Score) VALUES ('${loggedIn}', '${currScore}');`;
-  //     db.exec(updateScore);
-  //   }
-  // }
-});
-
-////////////////////////////////////////// DATABASE FEATURES ///////////////////////////
-//RETRIEVE USERS DB
-app.get("/users_db", function (req, res) {
-  const getUsers = db.prepare(`SELECT * FROM Users;`);
-  let result = getUsers.all();
-
-  if (result === undefined) {
-    //CREATE PAGES TO RENDER
-    // res.send('nothing in db');
-  } else {
-    // res.send(all);
-  }
-});
-
-//RETRIEVE LEADERBOARD DB
-app.get("/leaderboard_db", function (req, res) {
-  const getBoard = db.prepare(`SELECT * FROM Leaderboard;`);
-  let result = getBoard.all();
-
-  if (result === undefined) {
-    // res.send('nothing in db');
-  } else {
-    // res.send(all);
-  }
-});
-
-//RETRIEVE LOGS DB
-app.get("/logs_db", function (req, res) {
-  const getLogs = db.prepare(`SELECT * FROM Logs;`);
-  let result = getLogs.all();
-
-  if (result === undefined) {
-    // res.send('nothing in db');
-  } else {
-    // res.send(all);
-  }
+//Post Game Score
+app.post("/post_score", function (req, res) {
+  const score = req.body.score;
+  const addScore = `UPDATE Leaderboard SET Highest_Score= '${score}' WHERE UserName='${loggedIn}';`;
+  db.exec(addScore);
+  res.redirect("/home");
 });
 
 app.listen(port);

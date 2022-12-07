@@ -8,17 +8,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght
   @0,100;0,400;0,900;1,100;1,400;1,900&display=swap" rel="stylesheet">
-  <link href = "../css/styles.css" rel = "stylesheet">
+  <link href = "css/styles.css" rel = "stylesheet">
   <title>homepage/gameplay/leaderboard</title>
 </head>
 <!--------------------------------body-------------------------------->
 <body>
 <!--------------------------------navbar-------------------------------->
   <nav class = "nav_bar">
-    <a href = "home" class = "main_logo">home</a>
+    <a href = "home" class = "main_logo">Home</a>
     <ul>
-      <li><a href = "login">login</a></li>
-      <li><a href = "register">register</a></li>
+      <li><a href = "logout">Logout</a></li>
+      <li><a href = "delete">Delete Account</a></li>
+      <li><a href = "logs">Logs</a></li>
     </ul>
   </nav>
 <!--------------------------------game-------------------------------->
@@ -29,16 +30,19 @@
             <h2>Player: 
               <%= loggedIn %> 
             </h2>
-            <p class="p-count">0</p>
+            <form action="/post_score" method="POST"><!-- EDIT CSS FOR THIS -->
+              <p class="p-count" name="score" id="score">0</p>
+              <input type="submit" value="Post Score to LeaderBoard"/>
+            </form>
     </div>
    
-    <div class="move">Choose your move</div>
-     
+    <div class="move">Choose your move</div> 
+    <!-- <button class="post_score">Post your score</button> -->
+     <!------player options------>
     <div class="options">
-        <button class="rock">Rock</button>
-        <button class="paper">Paper</button>
-        <button class="scissor">Scissors</button>   
-    </div>
+      <button class="rock">Rock</button>
+      <button class="paper">Paper</button>
+      <button class="scissor">Scissors</button>   
      
     <!------Display Winner------>
     <div class="result"></div>
@@ -46,11 +50,20 @@
     <div class="cpuChoice"></div>
 
   </section>
-  <script src="../rps.js"></script>
+  <script src="scripts/rps.js"></script>
 
   <!--------------------------------leaderboard-------------------------------->
   <section class="leaderboard">
     <h1>LeaderBoard</h1>
+    <ul>
+      <% leader.forEach(function(dat) { %>
+        User: <%= dat.UserName %>
+        <br>
+        Highest Score: <%= dat.Highest_Score%>
+        <br>
+        <br>
+      <% }); %>
+    </ul>
   </section>
 
 </body>
