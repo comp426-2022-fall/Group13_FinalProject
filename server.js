@@ -56,7 +56,7 @@ app.get("/logs", function (req, res) {
 app.get("/login", function (req, res) {
   if (loggedIn) {
     res.redirect("/home");
-    console.log("[LOGIN LOADED]");
+    console.log("[HOME LOADED - ALREADY LOGGED IN]");
   } else {
     res.render("login");
     console.log("[LOGIN LOADED]");
@@ -70,6 +70,7 @@ app.get("/register", function (req, res) {
 
 app.get("/delete", function (req, res) {
   res.render("delete");
+  console.log("[DELETE LOADED]");
 });
 
 app.get("/logout", function (req, res) {
@@ -78,6 +79,7 @@ app.get("/logout", function (req, res) {
   const logLogout = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${loggedIn}', 'logged out', '${now.toISOString()}');`;
   db.exec(logLogout);
   loggedIn = null;
+  console.log("[LOGOUT SUCCESSFUL]");
   res.redirect("/login");
 });
 
@@ -87,8 +89,8 @@ app.get("/home", function (req, res) {
     let result = getBoard.all();
     res.render("home", { loggedIn: loggedIn, leader: result });
     console.log("[HOME LOADED]");
-    //I dont know how the html pages are being accessed so how do you load them with different js.scripts
   } else {
+    console.log("[NOT LOGGED IN - REDIRECTING TO LOGIN]");
     res.redirect("/login");
   }
 });
@@ -99,6 +101,7 @@ app.post("/login", function (req, res) {
   const password = req.body.password;
   const time = Date.now();
   const now = new Date(time);
+
   //Check if user exists in database
   const checkUsername = db.prepare(
     `SELECT * FROM Users WHERE UserName='${username}'`
@@ -106,8 +109,8 @@ app.post("/login", function (req, res) {
   let result = checkUsername.get();
 
   if (result == undefined) {
-    //USERNAME DOES NOT EXIST
-    console.log("USERNAME DOES NOT EXIST");
+    //USERNAME DOES NOT EXIST==================== create page
+    console.log("[USERNAME DOES NOT EXIST]");
   } else {
     const checkPass = db.prepare(
       `SELECT * FROM Users WHERE UserName='${username}' and Password='${password}'`
@@ -115,7 +118,7 @@ app.post("/login", function (req, res) {
     let Pass = checkPass.get();
     if (Pass == undefined) {
       //Wrong Password
-      console.log("WRONG PASSWORD");
+      console.log("[WRONG PASSWORD]");
       const logLoginFailure = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'failed to login due to wrong password', '${now.toISOString()}');`;
       db.exec(logLoginFailure);
     } else {
@@ -159,7 +162,7 @@ app.post("/register", function (req, res) {
     }
     res.render("login");
   } else {
-    console.log("Username Exists");
+    console.log("[USERNAME EXISTS]");
   }
 });
 
@@ -178,7 +181,7 @@ app.post("/delete", function (req, res) {
 
   if (result == undefined) {
     //USERNAME DOES NOT EXIST
-    console.log("USERNAME DOES NOT EXIST");
+    console.log("[USERNAME DOES NOT EXIST]");
   } else {
     const getPass = db.prepare(
       `SELECT * FROM Users WHERE UserName='${username}' and Password='${password}'`
