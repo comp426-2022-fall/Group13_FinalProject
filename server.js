@@ -1,6 +1,7 @@
 import express from "express";
 import minimist from "minimist";
 import Database from "better-sqlite3";
+import { __esModule } from "node-fetch";
 
 //Database Initialization
 const db = new Database("database.db");
@@ -33,9 +34,13 @@ const app = express();
 const args = minimist(process.argv.slice(2));
 const port = args.port || 2000;
 
-app.use(express.static("css"));
-app.set("view engine", "ejs");
+//link server.js page with css styles
+app.use(express.static("/public"));
+app.use("/css", express.static("public/css"));
+app.use("/img", express.static("public/img"));
+app.use("/scripts", express.static("public/scripts"));
 
+app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -45,17 +50,28 @@ app.get("/", function (req, res) {
 
 //////////////////////////////////// USER ACCOUNT FEATURES ////////////////////////////
 app.get("/login", function (req, res) {
-  if (loggedIn) res.redirect("/home");
-  else res.render("login");
+  if (loggedIn) {
+    res.redirect("/home");
+    console.log("[LOGIN LOADED]")
+  }
+  else {
+    res.render("login");
+    console.log("[LOGIN LOADED]")
+  }
 });
 
 app.get("/register", function (req, res) {
   res.render("register");
+  console.log("[REGISTER LOADED]");
 });
 
 app.get("/home", function (req, res) {
-  if (loggedIn) res.render("home", { loggedIn: loggedIn });
-  else res.redirect("/login");
+  if (loggedIn){
+    res.render("home", { loggedIn: loggedIn });
+    console.log("[HOME LOADED]");
+    //I dont know how the html pages are being accessed so how do you load them with different js.scripts
+  } 
+  else { res.redirect("/login"); }
 });
 
 //LOGIN TO ACCOUNT
@@ -182,42 +198,12 @@ app.post("/logout", function (req, res) {
 //Play Game
 app.post("/play_game", function (req, res) {
   const winner = req.body.winner;
-
+  const rock = req.body.rock;
+  console.log(rock);
   //Add this depending on how the frontend logic works
   if (winner == 0) {
   } else {
   }
-  // const userInput = req.body.input; // Rock, paper or scissors
-  // const randInt = Math.floor(Math.random() * 3); // Random integer between 0 to 2
-  // const compInput = null;
-  // if (randInt == 0) compInput = "rock";
-  // else if (randInt == 1) compInput = "paper";
-  // else compInput = "scissors";
-
-  // if (
-  //   (compInput == "rock" && userInput == "scissors") ||
-  //   (compInput == "paper" && userInput == "rock") ||
-  //   (compInput == "scissors" && userInput == "paper")
-  // ) {
-  //   currCompScore++;
-  //   const logGame = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${loggedIn}', 'played the game and lost', '${now.toISOString()}');`;
-  //   db.exec(logGame);
-  // } else {
-  //   currUserScore++;
-  //   const logGame = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${loggedIn}', 'played the game and won', '${now.toISOString()}');`;
-  //   db.exec(logGame);
-
-  //   //Update database with new high score if current score is higher than before
-  //   const currScore = currUserScore - currCompScore;
-  //   const getScore = db.prepare(
-  //     `SELECT Highest_Score FROM Leaderboard WHERE UserName='${loggedIn}'`
-  //   );
-  //   let highScore = getScore.get();
-  //   if (currScore > highScore) {
-  //     const updateScore = `INSERT INTO Leaderboard (UserName, Highest_Score) VALUES ('${loggedIn}', '${currScore}');`;
-  //     db.exec(updateScore);
-  //   }
-  // }
 });
 
 ////////////////////////////////////////// DATABASE FEATURES ///////////////////////////
