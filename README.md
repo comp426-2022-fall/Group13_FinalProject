@@ -44,8 +44,7 @@ Before the first meeting we set up to do a session of brainstorming and come wit
 ## Dependencies
 
 We used the following:
-= better-sqlite3
-
+- better-sqlite3
 - ejs 3.1.8
 - express 4.18.2
 - minimist 1.2.7
