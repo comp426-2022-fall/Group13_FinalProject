@@ -217,6 +217,7 @@ app.post("/delete", function (req, res) {
       db.exec(delAccLB);
       const logDeleteSuccess = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'deleted their account', '${now.toISOString()}');`;
       db.exec(logDeleteSuccess);
+      res.redirect("/logout");
       res.redirect("/login");
     }
   }

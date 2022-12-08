@@ -1,91 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-<!--------------------------------head-------------------------------->
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght
-  @0,100;0,400;0,900;1,100;1,400;1,900&display=swap" rel="stylesheet">
-  <link href = "../css/styles.css" rel = "stylesheet">
-  <title>homepage/gameplay/leaderboard</title>
-</head>
-<!--------------------------------body-------------------------------->
-<body>
-<!--------------------------------navbar-------------------------------->
-  <nav class = "nav_bar">
-    <a href = "home" class = "main_logo">Home</a>
-    <ul>
-      <li><a href = "logout">Logout</a></li>
-      <li><a href = "delete">Delete Account</a></li>
-      <li><a href = "logs">Logs</a></li>
-    </ul>
-  </nav>
-<!--------------------------------game-------------------------------->
-  <div id="main">
-    <section class="game">
-      <!------Score Display------>
-      <div class="playerScore">
-          <h1>Player: <%= loggedIn %> </h1>
+  <!--------------------------------head-------------------------------->
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght
+  @0,100;0,400;0,900;1,100;1,400;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link href="../css/styles.css" rel="stylesheet" />
+    <title>homepage/gameplay/leaderboard</title>
+  </head>
+  <!--------------------------------body-------------------------------->
+  <body>
+    <!--------------------------------navbar-------------------------------->
+    <nav class="nav_bar">
+      <a href="home" class="main_logo">Home</a>
+      <ul>
+        <li><a href="logout">Logout</a></li>
+        <li><a href="delete">Delete Account</a></li>
+        <li><a href="logs">Logs</a></li>
+      </ul>
+    </nav>
+    <!--------------------------------game-------------------------------->
+    <div id="main">
+      <section class="game">
+        <!------Score Display------>
+        <div class="playerScore">
+          <h1>Player: <%= loggedIn %></h1>
 
           <form id="post_score" action="/post_score" method="POST">
-            <input type="submit" id="post_score" name="post_score" value="Post Your Score">
+            <input
+              type="submit"
+              id="post_score"
+              name="post_score"
+              value="Post Your Score"
+            />
           </form>
 
           <div id="scores">
             <div class="count">
-              <p>Your Score: </p>
-              <p> <%= currUserScore %> </p>
+              <p>Your Score:</p>
+              <p><%= currUserScore %></p>
             </div>
 
             <div class="c-count" id="c">
-              <p>CPU Score: </p>
-              <p> -<%= currCompScore %></p>
+              <p>CPU Score:</p>
+              <p><%= currCompScore %></p>
             </div>
           </div>
-      </div>
-    
-      <!---<div class="move">Choose your move</div> --->
-      <!------player options------>
-      <div id="options">
-        <form class="rock" action="/rock" method="POST">
-          <input type="submit" id="rock" name="rock" value="Rock">
-        </form>
+        </div>
 
-        <form class="paper" action="/paper" method="POST">
-          <input type="submit" id="paper" name="paper" value="Paper">
-        </form>
+        <!---<div class="move">Choose your move</div> --->
+        <!------player options------>
+        <div id="options">
+          <form class="rock" action="/rock" method="POST">
+            <input type="submit" id="rock" name="rock" value="Rock" />
+          </form>
 
-        <form class="scissors" action="/scissors" method="POST">
-          <input type="submit" id="scissors" name="scissors" value="Scissors">
-          <!---<img src="public/img/rock.jpg"> scrap image idea--->
-        </form>
-      </div>
-        
+          <form class="paper" action="/paper" method="POST">
+            <input type="submit" id="paper" name="paper" value="Paper" />
+          </form>
+
+          <form class="scissors" action="/scissors" method="POST">
+            <input
+              type="submit"
+              id="scissors"
+              name="scissors"
+              value="Scissors"
+            />
+            <!---<img src="public/img/rock.jpg"> scrap image idea--->
+          </form>
+        </div>
+
         <!------Display Winner------>
         <div class="result">Game Outcome: <%= gameOutcome %></div>
         <div id="choices">
-          <div class="pChoice">Your Choice: <%= userChoice %> </div>
-          <div class="pChoice">CPU Choice: <%= cpuChoice %> </div>
+          <div class="pChoice">Your Choice: <%= userChoice %></div>
+          <div class="pChoice">CPU Choice: <%= cpuChoice %></div>
         </div>
-    </section>
+      </section>
 
-    <!--------------------------------leaderboard-------------------------------->
-    <section class="leaderboard">
-      <h1>LeaderBoard</h1>
-      <div class="entry">
-        <ul> <% leader.forEach(function(dat) { %> User: <%= dat.UserName %>
-            <br>
+      <!--------------------------------leaderboard-------------------------------->
+      <section class="leaderboard">
+        <h1>LeaderBoard</h1>
+        <div class="entry">
+          <ul>
+            <% leader.forEach(function(dat) { %> User: <%= dat.UserName %>
+            <br />
             Highest Score: <%= dat.Highest_Score%>
-            <br>
-            <br>
-          <% }); %>
-        </ul>
-      </div>
-    </section>
-
-  </div>
-
-</body>
+            <br />
+            <br />
+            <% }); %>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </body>
 </html>
