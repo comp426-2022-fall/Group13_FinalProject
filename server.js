@@ -106,8 +106,8 @@ app.post("/login", function (req, res) {
   let result = checkUsername.get();
 
   if (result == undefined) {
-    //USERNAME DOES NOT EXIST
     console.log("USERNAME DOES NOT EXIST");
+    res.render("usernameDNE");
   } else {
     const checkPass = db.prepare(
       `SELECT * FROM Users WHERE UserName='${username}' and Password='${password}'`
@@ -179,7 +179,7 @@ app.post("/delete", function (req, res) {
   if (result == undefined) {
     //USERNAME DOES NOT EXIST
     console.log("USERNAME DOES NOT EXIST");
-    res.render("loginNotFound");
+    res.render("usernameDNE");
   } else {
     const getPass = db.prepare(
       `SELECT * FROM Users WHERE UserName='${username}' and Password='${password}'`
@@ -205,10 +205,11 @@ app.post("/delete", function (req, res) {
 ////////////////////////////////////////// GAME FEATURES ///////////////////////////////
 //Post Game Score
 app.post("/post_score", function (req, res) {
-  const score = req.body.score;
-  const addScore = `UPDATE Leaderboard SET Highest_Score= '${score}' WHERE UserName='${loggedIn}';`;
-  db.exec(addScore);
-  res.redirect("/home");
+  const score = req.body.c - count;
+  console.log(score);
+  // const addScore = `UPDATE Leaderboard SET Highest_Score= '${score}' WHERE UserName='${loggedIn}';`;
+  // db.exec(addScore);
+  // res.redirect("/home");
 });
 
 app.listen(port);
