@@ -85,6 +85,9 @@ app.get("/logout", function (req, res) {
   loggedIn = null;
   currCompScore = 0;
   currUserScore = 0;
+  uChoice = null;
+  cpuChoice = null;
+  gameOutcome = null;
   res.redirect("/login");
 });
 
@@ -102,7 +105,6 @@ app.get("/home", function (req, res) {
       gameOutcome: gameOutcome,
     });
     console.log("[HOME LOADED]");
-    //I dont know how the html pages are being accessed so how do you load them with different js.scripts
   } else {
     res.redirect("/login");
   }
@@ -133,6 +135,7 @@ app.post("/login", function (req, res) {
       console.log("WRONG PASSWORD");
       const logLoginFailure = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'failed to login due to wrong password', '${now.toISOString()}');`;
       db.exec(logLoginFailure);
+      res.render("wrong_password");
     } else {
       //LOGIN SUCCESSFUL
       const logLoginSuccess = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'logged in successfully', '${now.toISOString()}');`;
@@ -175,6 +178,7 @@ app.post("/register", function (req, res) {
     res.render("login");
   } else {
     console.log("Username Exists");
+    res.render("username_taken");
   }
 });
 
@@ -204,6 +208,7 @@ app.post("/delete", function (req, res) {
       //WRONG PASSWORD
       const logDeleteFailure = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${username}', 'failed to delete due to wrong password', '${now.toISOString()}');`;
       db.exec(logDeleteFailure);
+      res.render("wrong_password");
     } else {
       //PASSWORD VERIFICATION SUCCESS
       const delAcc = `DELETE FROM Users WHERE UserName='${username}'`;
