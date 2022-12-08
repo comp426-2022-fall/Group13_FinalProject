@@ -31,8 +31,14 @@
               <%= loggedIn %> 
             </h2>
             <button class="post_score" method="POST"></button>
-              <p class="p-count" id="p-count" name="p-count">Your Score: <%= currUserScore %></p>
-              <p class="c-count" id="c-count" name="c-count">CPU Score: <%= currCompScore %></p>
+              <p id="p-count" name="p-count">Your Score:</p>
+              <h3>
+                <%= currUserScore %>
+              </h3>
+              <p id="c-count" name="c-count">CPU Score:</p>
+              <h3>
+                <%= currCompScore %>
+              </h3>
 
     </div>
    

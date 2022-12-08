@@ -87,7 +87,12 @@ app.get("/home", function (req, res) {
   if (loggedIn) {
     const getBoard = db.prepare(`SELECT * FROM Leaderboard;`);
     let result = getBoard.all();
-    res.render("home", { loggedIn: loggedIn, leader: result });
+    res.render("home", {
+      loggedIn: loggedIn,
+      leader: result,
+      currUserScore: currUserScore,
+      currCompScore: currCompScore,
+    });
     console.log("[HOME LOADED]");
     //I dont know how the html pages are being accessed so how do you load them with different js.scripts
   } else {
@@ -216,53 +221,56 @@ app.post("/post_score", function (req, res) {
 
 app.post("/rock", function (req, res) {
   const userChoice = "r";
-  const cpuOptions = ['r','p','s']
+  const cpuOptions = ["r", "p", "s"];
 
   const n = Math.floor(Math.random() * 3);
   const cpuChoice = cpuOptions[n];
-  if(cpuChoice == userChoice){
+  if (cpuChoice == userChoice) {
     //no change
   }
-  if(cpuChoice == 'p'){
+  if (cpuChoice == "p") {
     currCompScore++;
   }
-  if(cpuChoice == 's'){
+  if (cpuChoice == "s") {
     currUserScore++;
   }
+  res.redirect("/home");
 });
 
 app.post("/paper", function (req, res) {
   const userChoice = "p";
-  const cpuOptions = ['r','p','s']
+  const cpuOptions = ["r", "p", "s"];
 
   const n = Math.floor(Math.random() * 3);
   const cpuChoice = cpuOptions[n];
-  if(cpuChoice == userChoice){
+  if (cpuChoice == userChoice) {
     //no change
   }
-  if(cpuChoice == 's'){
+  if (cpuChoice == "s") {
     currCompScore++;
   }
-  if(cpuChoice == 'r'){
+  if (cpuChoice == "r") {
     currUserScore++;
   }
+  res.redirect("/home");
 });
 
 app.post("/scissors", function (req, res) {
   const userChoice = "s";
-  const cpuOptions = ['r','p','s']
+  const cpuOptions = ["r", "p", "s"];
 
   const n = Math.floor(Math.random() * 3);
   const cpuChoice = cpuOptions[n];
-  if(cpuChoice == userChoice){
-    console.log("TIE")
+  if (cpuChoice == userChoice) {
+    console.log("TIE");
   }
-  if(cpuChoice == 'r'){
+  if (cpuChoice == "r") {
     currCompScore++;
   }
-  if(cpuChoice == 'p'){
+  if (cpuChoice == "p") {
     currUserScore++;
   }
+  res.redirect("/home");
 });
 
 app.listen(port);
