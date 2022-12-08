@@ -31,8 +31,8 @@
               <%= loggedIn %> 
             </h2>
             <button class="post_score" method="POST"></button>
-              <p class="p-count" id="p-count" name="p-count">0</p>
-              <p class="c-count" id="c-count" name="c-count">0</p>
+              <p class="p-count" id="p-count" name="p-count">Your Score: <%= currUserScore %></p>
+              <p class="c-count" id="c-count" name="c-count">CPU Score: <%= currCompScore %></p>
 
     </div>
    
@@ -52,8 +52,8 @@
       </form>
      
     <!------Display Winner------>
-    <div class="result"></div>
-    <div class="pChoice"></div>
+    <div class="result">you: </div>
+    <div class="pChoice">cpu: </div>
     <div class="cpuChoice"></div>
 
   </section>
