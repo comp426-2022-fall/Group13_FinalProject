@@ -14,7 +14,7 @@ For taking a look at our demo please go on the following video. Even if is a sim
 
 1. Clone te repository from our group project on git
 2. Run npm install
-3. Run npm start
+3. Run npm test
 4. Navigate to localhost:2000/
 5. CONTROL+C for finishing the job
 
