@@ -64,4 +64,4 @@ We have made use of an API, more details about the API endpoints being:
 
 ## Future development plan
 
-Considering that the mini-game world in developing constantly, we are considering to improve our design since we haven't had enough time to proper take care of that, and after to add more minigames for creating an interactive webpage for users, that they can use to compete against each other for getting the better score and maybe, why not to gain some sort of rewards.
+Considering that the mini-game world in developing constantly, we are considering to improve our design since we haven't had enough time to proper take care of that, and after to add more minigames for creating an interactive webpage for users, that they can use to compete against each other for getting the better score and maybe, why not to gain some sort of rewards. Also, for this particular game, we have to fix the leaderboard to make the players be actually in order (highest score to the smalles one).
