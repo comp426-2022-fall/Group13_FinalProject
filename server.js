@@ -11,6 +11,9 @@ db.pragma("journal_mode = WAL");
 var loggedIn = null; //Currently logged in user
 var currUserScore = 0; //Current User Score
 var currCompScore = 0; //Current Computer Score
+var uChoice = null;
+var cpuChoice = null;
+var gameOutcome = null;
 
 ////////////////////////////Database Setup///////////////////////////////////////
 const createUserTable = `CREATE TABLE Users (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(100), Email VARCHAR(255), UserName VARCHAR(64), Password VARCHAR(64));`;
@@ -80,6 +83,8 @@ app.get("/logout", function (req, res) {
   const logLogout = `INSERT INTO Logs (UserName, Message, Time) VALUES ('${loggedIn}', 'logged out', '${now.toISOString()}');`;
   db.exec(logLogout);
   loggedIn = null;
+  currCompScore = 0;
+  currUserScore = 0;
   res.redirect("/login");
 });
 
@@ -92,6 +97,9 @@ app.get("/home", function (req, res) {
       leader: result,
       currUserScore: currUserScore,
       currCompScore: currCompScore,
+      userChoice: uChoice,
+      cpuChoice: cpuChoice,
+      gameOutcome: gameOutcome,
     });
     console.log("[HOME LOADED]");
     //I dont know how the html pages are being accessed so how do you load them with different js.scripts
@@ -219,55 +227,61 @@ app.post("/post_score", function (req, res) {
 });
 
 app.post("/rock", function (req, res) {
-  const userChoice = "r";
-  const cpuOptions = ["r", "p", "s"];
-
+  uChoice = "ROCK";
+  const cpuOptions = ["ROCK", "PAPER", "SCISSORS"];
   const n = Math.floor(Math.random() * 3);
-  const cpuChoice = cpuOptions[n];
-  if (cpuChoice == userChoice) {
-    //no change
+  cpuChoice = cpuOptions[n];
+
+  if (cpuChoice == uChoice) {
+    gameOutcome = "TIE";
   }
-  if (cpuChoice == "p") {
+  if (cpuChoice == "PAPER") {
     currCompScore++;
+    gameOutcome = "YOU LOSE";
   }
-  if (cpuChoice == "s") {
+  if (cpuChoice == "SCISSORS") {
     currUserScore++;
+    gameOutcome = "YOU WIN";
   }
   res.redirect("/home");
 });
 
 app.post("/paper", function (req, res) {
-  const userChoice = "p";
-  const cpuOptions = ["r", "p", "s"];
-
+  uChoice = "PAPER";
+  const cpuOptions = ["ROCK", "PAPER", "SCISSORS"];
   const n = Math.floor(Math.random() * 3);
-  const cpuChoice = cpuOptions[n];
-  if (cpuChoice == userChoice) {
-    //no change
+  cpuChoice = cpuOptions[n];
+
+  if (cpuChoice == uChoice) {
+    gameOutcome = "TIE";
   }
-  if (cpuChoice == "s") {
+  if (cpuChoice == "SCISSORS") {
     currCompScore++;
+    gameOutcome = "YOU LOSE";
   }
-  if (cpuChoice == "r") {
+  if (cpuChoice == "ROCK") {
     currUserScore++;
+    gameOutcome = "YOU WIN";
   }
   res.redirect("/home");
 });
 
 app.post("/scissors", function (req, res) {
-  const userChoice = "s";
-  const cpuOptions = ["r", "p", "s"];
-
+  uChoice = "SCISSORS";
+  const cpuOptions = ["ROCK", "PAPER", "SCISSORS"];
   const n = Math.floor(Math.random() * 3);
-  const cpuChoice = cpuOptions[n];
-  if (cpuChoice == userChoice) {
-    console.log("TIE");
+  cpuChoice = cpuOptions[n];
+
+  if (cpuChoice == uChoice) {
+    gameOutcome = "TIE";
   }
-  if (cpuChoice == "r") {
+  if (cpuChoice == "ROCK") {
     currCompScore++;
+    gameOutcome = "YOU LOSE";
   }
-  if (cpuChoice == "p") {
+  if (cpuChoice == "PAPER") {
     currUserScore++;
+    gameOutcome = "YOU WIN";
   }
   res.redirect("/home");
 });
