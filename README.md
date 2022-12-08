@@ -8,13 +8,15 @@ Our 'Rock, paper, scissors' game is a simple concept which allows more users to 
 
 ## Demo
 
-For taking a look at our demo please go on the following video. Even if is a simple concept, it can become adictive so do not hesitate to try it. We focused in creating a concept so far, considering that was challenging to find appropiate times to meet all of us and do proper development work. So, the video will be done by one person, but everyone contributed in that poject, having an amazing team work flow, and a great experience in the development process.
+For taking a look at our demo please go on the following video. Even if is a simple concept, it can become adictive so do not hesitate to try it. We focused in creating a concept so far, considering that was challenging to find appropiate times to meet all of us and do proper development work. So, the video will be done by one person, but everyone contributed in that poject, having an amazing team work flow, and a great experience in the development process. 
+
+https://youtu.be/NbU2CElKXa4
 
 ## Setup instruction
 
 1. Clone te repository from our group project on git
 2. Run npm install
-3. Run npm start
+3. Run npm test
 4. Navigate to localhost:2000/
 5. CONTROL+C for finishing the job
 
