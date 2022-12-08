@@ -4,8 +4,8 @@ We are bulding a web app that allows you to play Rock-Paper-Scissors with the co
 
 # Roles
 
-Frontend Dev - Ethan
-Backend Dev - Robert, Bhavith
+Frontend Dev - Ethan, Robert
+Backend Dev - Bhavith
 
 # License
 
