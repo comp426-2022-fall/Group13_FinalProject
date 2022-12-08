@@ -30,27 +30,50 @@
             <h2>Player: 
               <%= loggedIn %> 
             </h2>
-            <form action="/post_score" method="POST"><!-- EDIT CSS FOR THIS -->
-              <p class="p-count" name="score" id="score">0</p>
-              <input type="submit" value="Post Score to LeaderBoard"/>
+            <form class="post_score" action="/post_score" method="POST">
+              <input type="submit" id="post_score" name="post_score" value="Post Your Score">
             </form>
+              <p id="p-count" name="p-count">Your Score:</p>
+              <h3>
+                <%= currUserScore %>
+              </h3>
+              <p id="c-count" name="c-count">CPU Score:</p>
+              <h3>
+                <%= currCompScore %>
+              </h3>
+
     </div>
    
     <div class="move">Choose your move</div> 
-    <!-- <button class="post_score">Post your score</button> -->
      <!------player options------>
     <div class="options">
-      <button class="rock">Rock</button>
-      <button class="paper">Paper</button>
-      <button class="scissor">Scissors</button>   
+      <form class="rock" action="/rock" method="POST">
+        <input type="submit" id="rock" name="rock" value="Rock">
+      </form>
+
+      <form class="paper" action="/paper" method="POST">
+        <input type="submit" id="paper" name="paper" value="Paper">
+      </form>
+
+      <form class="scissors" action="/scissors" method="POST">
+        <input type="submit" id="scissors" name="scissors" value="Scissors">
+      </form>
      
     <!------Display Winner------>
-    <div class="result"></div>
-    <div class="pChoice"></div>
-    <div class="cpuChoice"></div>
+    <div class="result">Game Outcome: </div>
+    <h3>
+      <%= gameOutcome %>
+    </h3>
+    <div class="pChoice">Your Choice: </div>
+    <h3>
+      <%= userChoice %>
+    </h3>
+    <div class="pChoice">CPU Choice: </div>
+    <h3>
+      <%= cpuChoice %>
+    </h3>
 
   </section>
-  <script src="scripts/rps.js"></script>
 
   <!--------------------------------leaderboard-------------------------------->
   <section class="leaderboard">
