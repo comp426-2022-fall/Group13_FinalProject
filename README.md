@@ -56,21 +56,25 @@ User can do the following actions: create an account, delete an account, see if 
 
 HTML pages and how user interact:
 
-Delete account:
+Register account and username taken: users are aible to register themselfs by introducing name, email, username and password. If username is already taken then the username is used page will occur.
 
-Register account:
+Delete account: users are able to delete their account by introducing the username and password (when they are logged in)
 
-Log in:
+Log in: by introducing correct username and password combination users aere able to join the game home page and strat playing the game
 
-Log out:
+Log out: by pressing log out the users are simply logging out of their account
 
-Home:
+Home: home page is the page with the game, leaderboard and all actions displayed
 
-Wrong password:
+Wrong password: if the username password combination is wrong and password is wrong then this page will be displayed
 
-Wrong username:
+Wrong username: if the username does not exist this page will be displayed (when users are trying to log in)
 
-Logs:
+Logs: all the action for the server can be noticed
+
+Post score option: action that can be taken on the home page to update their score in the leaderboard (when they are logged in)
+
+Action takes during the game/playing the game: choosing their option for the game and geetin a: win, tie or lose, affecting their overall score
 
 ## API
 
