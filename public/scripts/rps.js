@@ -1,8 +1,5 @@
 // rock, paper, scissor -- game logic
 
-var currUserScore = 0; //Current User Score
-var currCompScore = 0; //Current Computer Score
-
 const pScoreText = document.querySelector('.p-count');
 const cScoreText = document.querySelector('.c-count');
 const pChoiceText = document.querySelector('.pChoice');

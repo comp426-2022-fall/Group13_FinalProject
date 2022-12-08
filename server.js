@@ -212,11 +212,10 @@ app.post("/delete", function (req, res) {
 ////////////////////////////////////////// GAME FEATURES ///////////////////////////////
 //Post Game Score
 app.post("/post_score", function (req, res) {
-  const score = req.body.c - count;
-  console.log(score);
-  // const addScore = `UPDATE Leaderboard SET Highest_Score= '${score}' WHERE UserName='${loggedIn}';`;
-  // db.exec(addScore);
-  // res.redirect("/home");
+  const score = currUserScore - currCompScore;
+  const addScore = `UPDATE Leaderboard SET Highest_Score= '${score}' WHERE UserName='${loggedIn}';`;
+  db.exec(addScore);
+  res.redirect("/home");
 });
 
 app.post("/rock", function (req, res) {
