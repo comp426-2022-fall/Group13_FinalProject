@@ -3,8 +3,9 @@
 var currUserScore = 0; //Current User Score
 var currCompScore = 0; //Current Computer Score
 
-const pScoreText = document.querySelector('.p-count');
-const cScoreText = document.querySelector('.c-count');
+const parentElement = document.querySelector(".post_score")
+const pScoreText = parentElement.querySelector('.p-count');
+const cScoreText = parentElement.querySelector('.c-count');
 const pChoiceText = document.querySelector('.pChoice');
 const cChoiceText = document.querySelector('.cpuChoice');
 const resultText = document.querySelector('.result');
@@ -41,9 +42,6 @@ function game() {
             })
         })
         update.addEventListener('click',() => {
-            let final_score = playerScore - currCompScore;
-            console.log("PLAYER SCORE: " + playerScore);
-            console.log("CPU SCORE: " + currCompScore);
             window.location.reload();
         })
          
