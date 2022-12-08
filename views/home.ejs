@@ -30,20 +30,26 @@
             <h2>Player: 
               <%= loggedIn %> 
             </h2>
-            <form class="post_score" method="POST">
-              <input type="submit" value="post your score">
+            <button class="post_score" method="POST"></button>
               <p class="p-count" id="p-count" name="p-count">0</p>
               <p class="c-count" id="c-count" name="c-count">0</p>
-            </form>
 
     </div>
    
     <div class="move">Choose your move</div> 
      <!------player options------>
     <div class="options">
-      <button class="rock">Rock</button>
-      <button class="paper">Paper</button>
-      <button class="scissor">Scissors</button>   
+      <form class="rock" action="/rock" method="POST">
+        <input type="submit" id="rock" name="rock" value="Rock">
+      </form>
+
+      <form class="paper" action="/paper" method="POST">
+        <input type="submit" id="paper" name="paper" value="Paper">
+      </form>
+
+      <form class="scissors" action="/scissors" method="POST">
+        <input type="submit" id="scissors" name="scissors" value="Scissors">
+      </form>
      
     <!------Display Winner------>
     <div class="result"></div>

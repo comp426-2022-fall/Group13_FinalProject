@@ -9,6 +9,8 @@ db.pragma("journal_mode = WAL");
 
 //Global Variables for Functionality
 var loggedIn = null; //Currently logged in user
+var currUserScore = 0; //Current User Score
+var currCompScore = 0; //Current Computer Score
 
 ////////////////////////////Database Setup///////////////////////////////////////
 const createUserTable = `CREATE TABLE Users (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(100), Email VARCHAR(255), UserName VARCHAR(64), Password VARCHAR(64));`;
@@ -210,6 +212,57 @@ app.post("/post_score", function (req, res) {
   // const addScore = `UPDATE Leaderboard SET Highest_Score= '${score}' WHERE UserName='${loggedIn}';`;
   // db.exec(addScore);
   // res.redirect("/home");
+});
+
+app.post("/rock", function (req, res) {
+  const userChoice = "r";
+  const cpuOptions = ['r','p','s']
+
+  const n = Math.floor(Math.random() * 3);
+  const cpuChoice = cpuOptions[n];
+  if(cpuChoice == userChoice){
+    //no change
+  }
+  if(cpuChoice == 'p'){
+    currCompScore++;
+  }
+  if(cpuChoice == 's'){
+    currUserScore++;
+  }
+});
+
+app.post("/paper", function (req, res) {
+  const userChoice = "p";
+  const cpuOptions = ['r','p','s']
+
+  const n = Math.floor(Math.random() * 3);
+  const cpuChoice = cpuOptions[n];
+  if(cpuChoice == userChoice){
+    //no change
+  }
+  if(cpuChoice == 's'){
+    currCompScore++;
+  }
+  if(cpuChoice == 'r'){
+    currUserScore++;
+  }
+});
+
+app.post("/scissors", function (req, res) {
+  const userChoice = "s";
+  const cpuOptions = ['r','p','s']
+
+  const n = Math.floor(Math.random() * 3);
+  const cpuChoice = cpuOptions[n];
+  if(cpuChoice == userChoice){
+    console.log("TIE")
+  }
+  if(cpuChoice == 'r'){
+    currCompScore++;
+  }
+  if(cpuChoice == 'p'){
+    currUserScore++;
+  }
 });
 
 app.listen(port);
