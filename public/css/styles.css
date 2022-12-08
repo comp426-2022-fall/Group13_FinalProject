@@ -9,13 +9,12 @@ fieldset {
 }
 /*--------------------------------navbar--------------------------------*/
 .nav_bar {
-  background-color:#C3004F;
-  color:#222423;
+  background-color: rgb(237, 233, 233);
   overflow: hidden;
 }
 .nav_bar a {
   text-decoration: none;
-  color: #222423;
+  color: #202124;
 }
 .nav_bar a.main_logo {
   float: left;
@@ -31,60 +30,202 @@ fieldset {
 }
 .nav_bar ul li {
   padding: 10px;
-  background-color:#C3004F;
+  background-color:rgb(237, 233, 233);
   display: inline-block;
 }
 .nav_bar ul li a {
   font-size: 1em;
   text-align: center;
   padding: 10px 30px;
-  border: 2px solid #222423;
+  border: 2px solid #202124;
   border-radius: 15px;
 }
 .nav_bar ul li a:hover{
-  background-color: #222423;
+  background-color: #202124;
 }
 .nav_bar ul li a:hover{
-  color: #C3004F;
+  color: rgb(237, 233, 233);
 }
 .nav_bar ul li a:active{
-  border: 2px solid #2c2e2d;
-  color: #8b0038;
-  background-color: #0b0c0c;
+  border: 2px solid #35373b;
+  color: rgb(164, 161, 161);
+  background-color: #101012;
 }
 /*--------------------------------general--------------------------------*/
+
+#main{
+  height: 100vh;
+  display: flex;
+  justify-content: space-evenly;
+}
+/*--------------------------------game--------------------------------*/
+.game{
+  padding-top: 15px;
+  padding-left: 10px;
+  padding-right: 12px;
+  flex-grow: 1;
+}
 form{
-  border: 3px solid tomato;
   border-radius: 10px;
-  display: block;
+  display:flex;
   font-family: 'Urbanist', sans-serif;
+  justify-content: center;
+}
+h1{
+  font-size: 2.5em;
+}
+#post_score{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-decoration: none;
+}
+#post_score input{
+  font-size: 1.5em;
+  padding: 30px 25vw;
+  background-color: #202124;
+  color: #E0E0E0;
+  border-radius: 10px;
+  border: 2px solid #E0E0E0;
+}
+#post_score input:hover{
+  background-color: #E0E0E0;
+  color: #202124;
+}
+#post_score input:active{
+  background-color: rgb(164, 161, 161);
+  color: #101012;
+}
+#options{
+  display: flex;
+  justify-content: space-around;
+}
+#options input{
+  border: 2px solid #202124;
+  border-radius: 15px;
+  color: #202124;
+  flex-grow: 1;
+  padding: 10em 10vw;
+  flex-grow: 1;
+}
+#rock{
+  background-color: #83B3F3;
+  /*
+  background-image: url("../img/rock.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  */
+}
+#rock:hover{
+  border: 2px solid white;
+}
+#rock:active{
+  border: 2px solid rgb(100, 100, 100);
+  color: #19191b;
+  background-color: rgb(79, 107, 144);
+}
+#paper{
+  background-color: #F5E48D;
+}
+#paper:hover{
+  border: 2px solid white;
+}
+#paper:active{
+  border: 2px solid rgb(100, 100, 100);
+  color: #19191b;
+  background-color: #b4a868;
+}
+#scissors{
+  background-color: #FE8D84;
+}
+#scissors:hover{
+  border: 2px solid white;
+}
+#scissors:active{
+  border: 2px solid rgb(100, 100, 100);
+  color: #19191b;
+  background-color: #c26b65;
 }
 body{
-  background-color: #e9e9e9;
+  background-color: #202124;
   font-family: 'Urbanist', sans-serif;
-  color:#222423;
+  color: rgb(237, 233, 233);
   display: grid;
   /* 
   margin-top: 20%;
   */
 }
-/*--------------------------------game--------------------------------*/
-.game{
-  border: 3px solid tomato;
+p{
+  font-size: 1.5em;
+}
+#scores{
+  display: flex;
+}
+.count{
+  display: flex;
+  padding: 10px;
+  flex-grow: 1;
+}
+.c-count{
+  display: flex;
+  padding: 10px;
+  flex-grow: 1;
+  justify-content: end;
 }
 .result{
-	margin-top: 20px;
+	margin-top: 10px;
 	font-size: 2rem;
 }
-.pChoice, .cpuChoice{
+.pChoice{
 	margin-top: 20px;
-	font-size: 2rem;
+	font-size: 1.2rem;
+}
+#choices{
+  display: flex;
+  justify-content: space-between;
 }
 /*--------------------------------Leaderboard--------------------------------*/
 .leaderboard{
-  border: 3px solid tomato;
+  padding: 10px;
+  border-left: 2px solid #E0E0E0;
+  flex-grow: 1;
+}
+.leaderboard h1{
+  border-bottom: 2px solid #E0E0E0;
+}
+.entry{
+  margin-top: 10px;
+  padding: 5px;
+  border-radius: 15px;
 }
 
-/*--------------------------------responsive build--------------------------------*/
-@media screen and (max-width: 612px)
-{}
+/*--------------------------------login--------------------------------*/
+#login{
+  padding-top: 20vh;
+}
+#login label{
+  font-family: 'Urbanist', sans-serif;
+}
+#login button{
+  text-decoration: none;
+  border: 2px solid #E0E0E0;
+  color: #E0E0E0;
+  background-color: #202124;
+  padding: 10px 30px;
+  border-radius: 15px;
+}
+#login button:hover{
+  padding: 10px 30px;
+  border-radius: 15px;
+  color: #202124;
+  background-color: #E0E0E0;
+  border: 2px solid #E0E0E0;
+}
+#login button:active{
+  padding: 10px 30px;
+  border-radius: 15px;
+  color: #0f0f0f;
+  background-color: #a5a5a5;
+  border: 2px solid white;
+}
+
