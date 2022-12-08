@@ -24,7 +24,7 @@ https://youtu.be/NbU2CElKXa4
 
 The team collaboration was great, splitting the jobs and tasks according to everyone time and also for participating as much as possible, everyone bringing his benefits to the project. We figured the following jobs for the team members:
 
-1. A review manager - Robert
+1. A review manager - All the team checked that
 2. A plan manager - Robert
 3. A documentation manager - Robert
 4. A release manager - Bhavith
