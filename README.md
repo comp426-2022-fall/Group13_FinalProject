@@ -54,6 +54,24 @@ We used the following:
 
 User can do the following actions: create an account, delete an account, see if the password is wrong, see if the username is taken, play against the computer by choosing their option in the game, see their position in the leaderboard.
 
+HTML pages and how user interact:
+
+Delete account:
+
+Register account:
+
+Log in:
+
+Log out:
+
+Home:
+
+Wrong password:
+
+Wrong username:
+
+Logs:
+
 ## API
 
 We have made use of an API, more details about the API endpoints being:
