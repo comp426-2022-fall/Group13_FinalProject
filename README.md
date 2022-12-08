@@ -54,11 +54,11 @@ User can do the following actions: create an account, delete an account, see if 
 ## API
 
 We have made use of an API, more details about the API endpoints being:
-- app.use
-- app.set
-- app.get
-- app.post
-- app.istern
+- app.use()
+- app.set()
+- app.get()
+- app.post()
+- app.listen()
 
 ## Future development plan
 
