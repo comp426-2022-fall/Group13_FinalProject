@@ -11,28 +11,12 @@
   @0,100;0,400;0,900;1,100;1,400;1,900&display=swap"
       rel="stylesheet"
     />
-    <link href="css/styles.css" rel="stylesheet" />
-    <title>homepage/gameplay/leaderboard</title>
+    <link href="../css/styles.css" rel="stylesheet" />
+    <title>login</title>
   </head>
   <!--------------------------------body-------------------------------->
   <body>
     <!--------------------------------navbar-------------------------------->
-    <nav class="nav_bar">
-      <a href="logs" class="main_logo">Logs</a>
-    </nav>
-
-    <section class="logs">
-      <h1>LeaderBoard</h1>
-      <ul>
-        <% logs.forEach(function(dat) { %> User: <%= dat.UserName %>
-        <br />
-        Message: <%= dat.Message%>
-        <br />
-        Time: <%= dat.Time%>
-        <br />
-        <br />
-        <% }); %>
-      </ul>
-    </section>
-  </body>
+    <h1>Username is already taken. Please choose a different username! </h1>
+  </body>
 </html>
