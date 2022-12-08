@@ -28,6 +28,7 @@ The team collaboration was great, splitting the jobs and tasks according to ever
 7. Back end lead - Bhavit
 8. Database lead - Bhavit
 9. Design lead - Ethan
+10. Video Creator - Robert
 
 ## Planning
 
