@@ -8,7 +8,7 @@ Our 'Rock, paper, scissors' game is a simple concept which allows more users to 
 
 ## Demo
 
-For taking a look at our demo please go on the following video. Even if is a simple concept, it can become adictive so do not hesitate to try it. We focused in creating a concept so far, considering that was challenging to find appropiate times to meet all of us and do proper development work. So, the video will be done by one person, but everyone contributed in that poject, having an amazing team work flow, and a great experience in the development process.
+For taking a look at our demo please go on the following video. Even if is a simple concept, it can become adictive so do not hesitate to try it. We focused in creating a concept so far, considering that was challenging to find appropiate times to meet all of us and do proper development work. So, the video will be done by one person, but everyone contributed in that poject, having an amazing team work flow, and a great experience in the development process. 
 
 https://youtu.be/NbU2CElKXa4
 
@@ -17,9 +17,8 @@ https://youtu.be/NbU2CElKXa4
 1. Clone te repository from our group project on git
 2. Run npm install
 3. Run npm test
-4. Run npm start
-5. Navigate to localhost:2000/
-6. CONTROL+C for finishing the job
+4. Navigate to localhost:2000/
+5. CONTROL+C for finishing the job
 
 ## Team manageemnt
 
@@ -59,11 +58,23 @@ User can do the following actions: create an account, delete an account, see if 
 
 We have made use of an API, more details about the API endpoints being:
 
-- app.use()
-- app.set()
-- app.get()
-- app.post()
-- app.listen()
+- app.use(): he app object is instantiated on creation of the Express server.
+- app.set(): function is used to assigns the setting name to value
+- app.get('/'): Redirects to app.get('/login')
+- app.get('logs'): userl can view all interactions with the server
+- app.get('/login): Log in page
+- app.get('/register): Register page is created
+- app.get('/delete): Users can delete their account
+- app.get('/logout): Users do the logout action
+- app.get('/home): Redirected to the home page
+- app.post('/login'): receive the username nad password, and check if username exists in database and if the password is correct, If it exists it redirect to the home game page, if not to the wrong username/password page
+- app.post('/register'): see if username exists in database, if not user can create the account, if not redirect to the username exists page
+- app.post('/delete'): if password and username matches the user can delete their account, if not they have to try again
+- app.post('/post_score'): user will be able to post their score in the database
+- app.post('/paper'): reflect the paper user option in game logic
+- app.post('/scissors'): reflect the scissors user option in game logic
+- app.post('/rock'): reflect the rock user option in game logic
+- app.listen(port): bind and listen the connections on the specified host and port
 
 ## Future development plan
 
